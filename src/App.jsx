@@ -6,7 +6,7 @@ import socket from './socket';
 import JoinBlock from './components/JoinBlock';
 import Chat from './components/Chat';
 
-import reducer, { isJoined, setUsers } from './reducer';
+import reducer, { isJoined, setUsers, newMessage } from './reducer';
 import axios from 'axios';
 
 const initialState = {
@@ -40,14 +40,28 @@ function App() {
        dispatch(setUsers(users))
     })
 
+    socket.on('ROOM:NEW_MESSAGE', message => {
+       dispatch(newMessage(message))
+    })
+
   }, [])
 
-  console.log(state)
+  console.log(state.messages)
+
+  const addMessage = (message) => {
+    dispatch(newMessage(message))
+  }
 
   return (
     <div className="wrapper">
         { state.joined 
-          ? <Chat users={state.users} messgae={state.messages} /> 
+          ? <Chat
+              roomId={state.roomId}
+              users={state.users} 
+              messages={state.messages}
+              userName={state.userName}
+              onAddMessage={addMessage}
+            /> 
           : <JoinBlock onLogin={onLogin} />
         }
 

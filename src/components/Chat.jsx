@@ -1,7 +1,21 @@
 import React from 'react';
-
-function Chat({users, messages}) {
+import socket from '../socket';
+// import { newMessage } from '../reducer';
+function Chat({users, messages, userName, roomId, onAddMessage}) {
   const [messageValue, setMessageValue] = React.useState('');
+
+  const onSendMessage = () => {
+    socket.emit('ROOM:NEW_MESSAGE', {
+      roomId,
+      text: messageValue,
+      userName
+    })
+    onAddMessage({
+      text: messageValue,
+      userName
+    })
+    setMessageValue('')
+  }
 
       return (
         <div className="chat">
@@ -15,13 +29,16 @@ function Chat({users, messages}) {
             </div>
             <div className="chat-messages">
             <div className="messages">
-                
-                <div className="message">
-                    <p>Lorem ipsum dolor sit amet.</p>
+              {
+                messages && messages.map(message => (
+                  <div className="message">
+                    <p>{message.text}</p>
                     <div>
-                    <span>test user.</span>
+                    <span>{message.userName}</span>
                     </div>
-              </div>
+                </div>
+                ))
+              }
           </div>
           <form>
             <textarea
@@ -29,7 +46,7 @@ function Chat({users, messages}) {
               onChange={e => setMessageValue(e.target.value)}
               className="form-control"
               rows="5"></textarea>
-            <button type="button" className="btn btn-primary">
+            <button onClick={onSendMessage} type="button" className="btn btn-primary">
               Отправить
             </button>
           </form>

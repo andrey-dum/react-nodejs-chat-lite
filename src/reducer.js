@@ -1,6 +1,6 @@
 const JOINED = 'JOINED'
 const SET_USERS = 'SET_USERS'
-const SET_MESSAGES = 'SET_MESSAGES'
+const NEW_MESSAGE = 'NEW_MESSAGE'
 
 export default (state, action) => {
     switch (action.type) {
@@ -16,10 +16,10 @@ export default (state, action) => {
                 ...state,
                 users: action.payload
             }
-        case SET_MESSAGES:
+        case NEW_MESSAGE:
             return {
                 ...state,
-                messages: action.payload
+                messages: [...state.messages, action.payload]
             }
             
          
@@ -36,9 +36,17 @@ export function isJoined(obj) {
         payload: obj
       }
 }
+
 export function setUsers(users) {
     return {
         type: SET_USERS,
         payload: users
+      }
+}
+
+export function newMessage(message) {
+    return {
+        type: NEW_MESSAGE,
+        payload: message
       }
 }
