@@ -3,6 +3,8 @@ import socket from '../socket';
 // import { newMessage } from '../reducer';
 function Chat({users, messages, userName, roomId, onAddMessage}) {
   const [messageValue, setMessageValue] = React.useState('');
+  const messagesRef = React.useRef(null);
+
 
   const onSendMessage = () => {
     socket.emit('ROOM:NEW_MESSAGE', {
@@ -17,21 +19,25 @@ function Chat({users, messages, userName, roomId, onAddMessage}) {
     setMessageValue('')
   }
 
-      return (
-        <div className="chat">
-            <div className="chat-users">
-            Комната: <b>1</b>
-            <hr />
-            <b>Онлайн ({users.length}):</b>
-            <ul>
-              { users.map((user, index) => <li key={user + index}>{user}</li>) }
-            </ul>
-            </div>
-            <div className="chat-messages">
-            <div className="messages">
+  React.useEffect(() => {
+    messagesRef.current.scrollTo(0, 99999);
+  }, [messages]);
+
+  return (
+      <div className="chat">
+        <div className="chat-users">
+          Комната: <b>1</b>
+          <hr />
+          <b>Онлайн ({users.length}):</b>
+          <ul>
+            { users.map((user, index) => <li key={user + index}>{user}</li>) }
+          </ul>
+        </div>
+        <div className="chat-messages">
+          <div className="messages">
               {
                 messages && messages.map(message => (
-                  <div className="message">
+                  <div red={messagesRef} className="message">
                     <p>{message.text}</p>
                     <div>
                     <span>{message.userName}</span>
@@ -51,8 +57,8 @@ function Chat({users, messages, userName, roomId, onAddMessage}) {
             </button>
           </form>
         </div>
-      </div>
-    );
-  }
+    </div>
+  );
+}
   
   export default Chat;
