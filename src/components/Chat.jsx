@@ -20,13 +20,13 @@ function Chat({users, messages, userName, roomId, onAddMessage}) {
   }
 
   React.useEffect(() => {
-    messagesRef.current.scrollTo(0, 99999);
+    messagesRef.current && messagesRef.current.scrollTo(0, 99999);
   }, [messages]);
 
   return (
       <div className="chat">
         <div className="chat-users">
-          Комната: <b>1</b>
+          Комната: <b>{roomId}</b>
           <hr />
           <b>Онлайн ({users.length}):</b>
           <ul>

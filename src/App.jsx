@@ -6,7 +6,7 @@ import socket from './socket';
 import JoinBlock from './components/JoinBlock';
 import Chat from './components/Chat';
 
-import reducer, { isJoined, setUsers, newMessage } from './reducer';
+import reducer, { isJoined, setUsers, newMessage, setData } from './reducer';
 import axios from 'axios';
 
 const initialState = {
@@ -25,7 +25,8 @@ function App() {
 
     socket.emit('ROOM:JOIN', obj);
     const { data } = await axios.get(`/rooms/${obj.roomId}`);
-    dispatch(setUsers(data.users))
+    // dispatch(setUsers(data.users))
+    dispatch(setData(data))
 
   }
 
