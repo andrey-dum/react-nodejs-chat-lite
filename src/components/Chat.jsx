@@ -37,7 +37,7 @@ function Chat({users, messages, userName, roomId, onAddMessage}) {
           <div className="messages">
               {
                 messages && messages.map(message => (
-                  <div red={messagesRef} className="message">
+                  <div ref={messagesRef} className="message">
                     <p>{message.text}</p>
                     <div>
                     <span>{message.userName}</span>
