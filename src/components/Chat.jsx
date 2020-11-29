@@ -1,15 +1,16 @@
+import React from 'react';
 
+function Chat({users, messages}) {
+  const [messageValue, setMessageValue] = React.useState('');
 
-function Chat() {
       return (
         <div className="chat">
             <div className="chat-users">
             Комната: <b>1</b>
             <hr />
-            <b>Онлайн (1):</b>
+            <b>Онлайн ({users.length}):</b>
             <ul>
-        
-                <li>User</li>
+              { users.map((user, index) => <li key={user + index}>{user}</li>) }
             </ul>
             </div>
             <div className="chat-messages">
@@ -18,12 +19,14 @@ function Chat() {
                 <div className="message">
                     <p>Lorem ipsum dolor sit amet.</p>
                     <div>
-                    <span>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</span>
+                    <span>test user.</span>
                     </div>
               </div>
           </div>
           <form>
             <textarea
+              value={messageValue}
+              onChange={e => setMessageValue(e.target.value)}
               className="form-control"
               rows="5"></textarea>
             <button type="button" className="btn btn-primary">
